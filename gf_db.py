@@ -4,7 +4,7 @@ Created on Mon Feb 10 11:23:23 2020
 
 @author: s3nt3nz4
 
-Convertisseur https://www.mtggoldfish.com > https://deckbox.org/
+Convert https://www.mtggoldfish.com > https://deckbox.org/
 
 Tuto tkinter : https://sebsauvage.net/python/gui/index_fr.html
 
@@ -86,13 +86,21 @@ class Magic(tk.Tk):
 
     def onclick(self):
         url = self.entryVariable.get()
-        conversion(url)
-        self.labelVariable.set("OK !")
+        try:
+            conversion(url)
+            self.labelVariable.set("OK !")
+        except:
+            self.labelVariable.set("Error : check the url (should look like : "
+                                   "https://mtggoldfish-csv-export.s3.amazonaws.com/......./my_collection.csv).")
 
     def onpressenter(self, event):
         url = self.entryVariable.get()
-        conversion(url)
-        self.labelVariable.set("OK !")
+        try:
+            conversion(url)
+            self.labelVariable.set("OK !")
+        except:
+            self.labelVariable.set("Error : check the url (should look like : "
+                                   "https://mtggoldfish-csv-export.s3.amazonaws.com/......./my_collection.csv).")
 
     def close_window(self):
         self.destroy()
