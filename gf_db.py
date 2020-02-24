@@ -17,7 +17,7 @@ import tkinter as tk
 
 
 def conversion(url):
-#    print("je commence la conversion..." + url)
+    # print("je commence la conversion..." + url)
     gf = DataFrame(read_csv(url))
     gf['Tradelist Count'] = ''
     gf['Card Number'] = ''
