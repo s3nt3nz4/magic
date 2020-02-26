@@ -16,13 +16,18 @@ from tkinter import filedialog
 import tkinter as tk
 
 
-def conversion(url):
+def conversion(url, lang_select):
     # print("je commence la conversion..." + url)
+    lib_lang = 'Error'
+    if lang_select == 1:
+        lib_lang = 'English'
+    elif lang_select == 2:
+        lib_lang = 'French'
     gf = DataFrame(read_csv(url))
     gf['Tradelist Count'] = ''
     gf['Card Number'] = ''
     gf['Condition'] = ''
-    gf['Language'] = 'French'
+    gf['Language'] = lib_lang
     gf['Foil'] = ''
     gf['Signed'] = ''
     gf['Artist Proof'] = ''
@@ -70,24 +75,35 @@ class Magic(tk.Tk):
         self.entry.grid(column=0, row=0, sticky='EW')
         self.entry.bind("<Return>", self.onpressenter)
 
-        button = tk.Button(self, text="Convertir", command=self.onclick)
+        button = tk.Button(self, text="Convert", command=self.onclick)
         button.grid(column=1, row=0)
 
         self.labelVariable = tk.StringVar()
         label = tk.Label(self, textvariable=self.labelVariable, anchor="w", fg="black", bg="grey")
         label.grid(column=0, row=1, columnspan=3, sticky="EW")
-        self.labelVariable.set("Coller ci-dessus l'url MTG Goldfish")
+        self.labelVariable.set("Paste the url MTG Goldfish above")
 
-        button_exit = tk.Button(self, text="Terminé", command=self.close_window)
+        button_exit = tk.Button(self, text="Exit", command=self.close_window)
         button_exit.grid(column=2, row=0)
 
         self.grid_columnconfigure(0, weight=1)
         self.resizable(True, False)
 
+        self.langue = tk.IntVar()
+        r1 = tk.Radiobutton(self, text="English", variable=self.langue, value=1, command=self.sel)
+        r1.grid(column=0, row=2)
+
+        r2 = tk.Radiobutton(self, text="French", variable=self.langue, value=2, command=self.sel)
+        r2.grid(column=1, row=2)
+        r2.select()
+
+    def sel(self):
+        return self.langue.get()
+
     def onclick(self):
         url = self.entryVariable.get()
         try:
-            conversion(url)
+            conversion(url, self.sel())
             self.labelVariable.set("OK !")
         except:
             self.labelVariable.set("Error : check the url (should look like : "
@@ -96,7 +112,7 @@ class Magic(tk.Tk):
     def onpressenter(self, event):
         url = self.entryVariable.get()
         try:
-            conversion(url)
+            conversion(url, self.sel())
             self.labelVariable.set("OK !")
         except:
             self.labelVariable.set("Error : check the url (should look like : "
